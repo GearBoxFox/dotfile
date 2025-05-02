@@ -13,18 +13,22 @@ export default ({
     return Window({
         name,
         visible: false,
-        layer: 'overlay',
+        layer: 'top',
         ...props,
 
         child: Box({
             setup: (self) => {
-                self.hook(App, (self, currentName, visible) => {
-                    if (currentName === name) {
-                        self.toggleClassName(hideClassName, !visible);
-                    }
-                }).keybind("Escape", () => App.closeWindow(name))
-                if (showClassName !== "" && hideClassName !== "")
-                    self.className = `${showClassName} ${hideClassName}`;
+                self.keybind("Escape", () => closeEverything());
+                if (showClassName != "" && hideClassName !== "") {
+                    self.hook(App, (self, currentName, visible) => {
+                        if (currentName === name) {
+                            self.toggleClassName(hideClassName, !visible);
+                        }
+                    });
+
+                    if (showClassName !== "" && hideClassName !== "")
+                        self.className = `${showClassName} ${hideClassName}`;
+                }
             },
             child: child,
         }),
