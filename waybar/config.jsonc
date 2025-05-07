@@ -2,7 +2,7 @@
 
 [{
 
-"output": "eDP-1",
+"output": "DP-2",
 "include": "~/.config/waybar/config-global.jsonc",
 "position": "left", 
 
