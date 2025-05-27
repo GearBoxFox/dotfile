@@ -17,17 +17,16 @@
 
 "modules-center": [
 	"hyprland/window",
-	"hyprland/workspaces", 
+	"hyprland/workspaces#rw",
 	"hyprland/submap",
 ],
 
 "modules-right": [
-	"tray",
-	"backlight", 
 	"pulseaudio", 
 	"pulseaudio#source",
 	"network", 
 	"bluetooth",
+	"tray",
 ],
 
 // PulseAudio {{{
@@ -45,31 +44,24 @@
 "position": "right", 
 
 "modules-left": [
+	"clock",
 	"idle_inhibitor",
-	"custom/mako",
-	"group/privacygroup",
-	"sway/scratchpad",
-        "sway/workspaces", 
+	"cpu", 
+	"memory", 
 ],
 
 "modules-center": [
-	"sway/window",
-	"sway/mode",
+	"hyprland/window",
+  "hyprland/workspaces#rw",
 ],
 
 "modules-right": [
-	"tray",
 	"pulseaudio", 
 	"pulseaudio#source",
 	"network", 
 	"bluetooth",
-	"cpu", 
-	"memory", 
 	"temperature", 
-	"sway/language",
-	"keyboard-state",
-	"battery",
-	"clock"
+	"tray",
 ],
 
 // PulseAudio {{{
