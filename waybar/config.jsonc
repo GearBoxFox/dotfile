@@ -1,158 +1,146 @@
 // vim: foldmethod=marker
-
-[{
-
-"output": "DP-2",
-"include": "~/.config/waybar/config-global.jsonc",
-"position": "left", 
-
-"modules-left":	[
-	"clock",
-	"idle_inhibitor",
-	"battery",
-  "cpu", 
-	"memory", 
-	"temperature",
-],
-
-"modules-center": [
-	"hyprland/window",
-	"hyprland/workspaces#rw",
-	"hyprland/submap",
-],
-
-"modules-right": [
-	"pulseaudio", 
-	"pulseaudio#source",
-	"network", 
-	"bluetooth",
-	"tray",
-],
-
-// PulseAudio {{{
-"pulseaudio": {
-	"on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +1% && $HOME/.scripts/progressbar.sh --volume 'eDP-1'",
-	"on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -1% && $HOME/.scripts/progressbar.sh --volume 'eDP-1'",
-},
-// }}}
-
-},
-{
-
-"output": ["HDMI-A-1"],
-"include": "~/.config/waybar/config-global.jsonc",
-"position": "right", 
-
-"modules-left": [
-	"clock",
-	"idle_inhibitor",
-	"cpu", 
-	"memory", 
-],
-
-"modules-center": [
-	"hyprland/window",
-  "hyprland/workspaces#rw",
-],
-
-"modules-right": [
-	"pulseaudio", 
-	"pulseaudio#source",
-	"network", 
-	"bluetooth",
-	"temperature", 
-	"tray",
-],
-
-// PulseAudio {{{
-"pulseaudio": {
-	"on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +1% && $HOME/.scripts/progressbar.sh --volume 'HDMI-A-1'",
-	"on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -1% && $HOME/.scripts/progressbar.sh --volume 'HDMI-A-1'",
-},
-// }}}
-
-},
-{
-
-"output": ["DP-1"],
-"include": "~/.config/waybar/config-global.jsonc",
-"position": "right", 
-
-"modules-left": [
-	"idle_inhibitor",
-	"custom/mako",
-	"group/privacygroup",
-	"sway/scratchpad",
-        "sway/workspaces", 
-],
-
-"modules-center": [
-	"sway/window",
-	"sway/mode",
-],
-
-"modules-right": [
-	"tray",
-	"pulseaudio", 
-	"pulseaudio#source",
-	"network", 
-	"bluetooth",
-	"cpu", 
-	"memory", 
-	"temperature", 
-	"sway/language",
-	"keyboard-state",
-	"battery",
-	"clock"
-],
-
-// PulseAudio {{{
-"pulseaudio": {
-	"on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +1% && $HOME/.scripts/progressbar.sh --volume 'DP-1'",
-	"on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -1% && $HOME/.scripts/progressbar.sh --volume 'DP-1'",
-},
-// }}}
-
-},
-{
-
-"output": ["HEADLESS-1"],
-"include": "~/.config/waybar/config-global.jsonc",
-"position": "right", 
-
-"modules-left": [
-	"idle_inhibitor",
-	"custom/mako",
-	"group/privacygroup",
-	"sway/scratchpad",
-        "sway/workspaces", 
-],
-
-"modules-center": [
-	"sway/window",
-	"sway/mode",
-],
-
-"modules-right": [
-	"tray",
-	"pulseaudio", 
-	"pulseaudio#source",
-	"network", 
-	"bluetooth",
-	"cpu", 
-	"memory", 
-	"temperature", 
-	"sway/language",
-	"keyboard-state",
-	"battery",
-	"clock"
-],
-
-// PulseAudio {{{
-"pulseaudio": {
-	"on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +1% && $HOME/.scripts/progressbar.sh --volume 'HEADLESS-1'",
-	"on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -1% && $HOME/.scripts/progressbar.sh --volume 'HEADLESS-1'",
-},
-// }}}
-
-}]
+[
+  {
+    "output": "DP-2",
+    "include": "~/.config/waybar/config-global.jsonc",
+    "position": "bottom",
+    "layer": "top",
+    "height": 30,
+    "spacing": 0,
+    "modules-left": [
+      "hyprland/window",
+      "hyprland/workspaces#kanji",
+      "clock",
+      "battery",
+      "cpu",
+      "memory",
+      "temperature",
+      "custom/weather",
+      "custom/uptime"
+    ],
+    "modules-center": [
+      "hyprland/submap",
+    ],
+    "modules-right": [
+      "custom/quote",
+      "custom/playerctl",
+      "pulseaudio",
+      "pulseaudio#source",
+      "network",
+      "custom/restart"
+    ],
+    // PulseAudio {{{
+    "pulseaudio": {
+      "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +1% && $HOME/.scripts/progressbar.sh --volume 'eDP-1'",
+      "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -1% && $HOME/.scripts/progressbar.sh --volume 'eDP-1'",
+    }
+    // }}}
+  },
+  {
+    "output": [
+      "HDMI-A-1"
+    ],
+    "include": "~/.config/waybar/config-global.jsonc",
+    "position": "bottom",
+    "modules-left": [
+      "hyprland/window",
+      "hyprland/workspaces#kanji",
+      "clock",
+      "idle_inhibitor",
+      "cpu",
+      "memory",
+      "custom/nvidia"
+    ],
+    "modules-center": [
+      "cava"
+    ],
+    "modules-right": [
+      "pulseaudio",
+      "pulseaudio#source",
+      "tray",
+      "custom/restart",
+    ],
+    // PulseAudio {{{
+    "pulseaudio": {
+      "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +1% && $HOME/.scripts/progressbar.sh --volume 'HDMI-A-1'",
+      "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -1% && $HOME/.scripts/progressbar.sh --volume 'HDMI-A-1'",
+    },
+    // }}}
+  },
+  {
+    "output": [
+      "DP-1"
+    ],
+    "include": "~/.config/waybar/config-global.jsonc",
+    "position": "right",
+    "modules-left": [
+      "idle_inhibitor",
+      "custom/mako",
+      "group/privacygroup",
+      "sway/scratchpad",
+      "sway/workspaces",
+    ],
+    "modules-center": [
+      "sway/window",
+      "sway/mode",
+    ],
+    "modules-right": [
+      "tray",
+      "pulseaudio",
+      "pulseaudio#source",
+      "network",
+      "bluetooth",
+      "cpu",
+      "memory",
+      "temperature",
+      "sway/language",
+      "keyboard-state",
+      "battery",
+      "clock"
+    ],
+    // PulseAudio {{{
+    "pulseaudio": {
+      "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +1% && $HOME/.scripts/progressbar.sh --volume 'DP-1'",
+      "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -1% && $HOME/.scripts/progressbar.sh --volume 'DP-1'",
+    },
+    // }}}
+  },
+  {
+    "output": [
+      "HEADLESS-1"
+    ],
+    "include": "~/.config/waybar/config-global.jsonc",
+    "position": "right",
+    "modules-left": [
+      "idle_inhibitor",
+      "custom/mako",
+      "group/privacygroup",
+      "sway/scratchpad",
+      "sway/workspaces",
+    ],
+    "modules-center": [
+      "sway/window",
+      "sway/mode",
+    ],
+    "modules-right": [
+      "tray",
+      "pulseaudio",
+      "pulseaudio#source",
+      "network",
+      "bluetooth",
+      "cpu",
+      "memory",
+      "temperature",
+      "sway/language",
+      "keyboard-state",
+      "battery",
+      "clock"
+    ],
+    // PulseAudio {{{
+    "pulseaudio": {
+      "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +1% && $HOME/.scripts/progressbar.sh --volume 'HEADLESS-1'",
+      "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -1% && $HOME/.scripts/progressbar.sh --volume 'HEADLESS-1'",
+    },
+    // }}}
+  }
+]

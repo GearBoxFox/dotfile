@@ -1,0 +1,269 @@
+/*fineman's styling*/
+
+/*IN CASE YOU FORGOR*/
+/*padding/margin: up right down left*/
+
+/*Colors*/
+
+/*Everforest*/
+@define-color background #2b3339;
+@define-color background-light #323c41;
+@define-color foreground #d3c6aa;
+@define-color black #3c474d;
+@define-color red #e67e80;
+@define-color green #a7c080;
+@define-color yellow #dbbc7f;
+@define-color blue #7fbbb3;
+@define-color magenta #d699b6;
+@define-color cyan #83c092;
+@define-color white #d3c6aa;
+@define-color orange #e69875;
+
+
+* {
+	all: unset;
+	font-family: "JetBrains Mono";
+	font-size: 14px;
+}
+
+tooltip {
+	background: @background;
+	border: 2px solid @orange;
+}
+
+tooltip label {
+	color: @foreground;
+}
+
+window#waybar {
+  color: @background;
+}
+
+#idle_inhibitor { 
+	padding: 3px 0px; 
+	color: @green;
+	/*box-shadow: inset -3px 0px;*/
+}
+
+#idle_inhibitor.activated { 
+	background-color: @foreground;
+	color: @background;
+	/*box-shadow: inset -3px 0px;*/
+}
+
+#custom-mako {
+	padding: 3px 0px; 
+	/*margin: 4px 0px; */
+	background-color: @surimiOrange;
+	/*box-shadow: inset -3px 0px;*/
+}
+
+#privacy {
+	background-color: @red;
+	color: @green;
+	padding: 3px 8px;
+}
+
+#privacy.tooltip {
+	padding: 20px 8px;
+}
+
+/* sway/scratchpad */
+#scratchpad {
+	padding: 3px 0px; 
+	background-color: @gray2;
+	color: @background;
+}
+
+/* sway/workspaces */
+#workspaces button {
+	color: @green;
+	padding: 2px 0px 2px 0px;
+  font-size: 24px;
+}
+
+#workspaces button:hover, #workspaces button:hover.focused, #workspaces button:hover.visible, #workspaces button:hover.urgent, #workspaces button:hover.urgent.visible {
+	color: @green;
+	background: @background;
+}
+
+#workspaces button.visible {
+  color: @bg1;
+	background-color: @green;
+}
+
+#workspaces button.focused {
+	background: @blue;
+	color: @background;
+}
+
+#workspaces button.urgent {
+	background-color: @red;
+	color: @background;
+}
+
+#workspaces button.visible.urgent{
+	background-color: @red;
+	color: @foreground;
+}
+
+#workspaces button.urgent.focused {
+	background: @blue;
+	color: @background;
+}
+
+/* sway/mode */
+#mode {
+	padding: 3px 0px;
+	margin: 3px 0px;
+	background-color: @orange;
+	color: @background;
+}
+
+/* sway/window */
+#window {
+	padding: 10px 8px;
+	margin: 10px 0px;
+	color: @foreground;
+}
+
+#tray {
+	padding: 4px 0px;
+	color: @foreground;
+}
+
+#tray menu {
+	background-color: @background;
+	border: 1px solid @background-light;
+}
+
+#tray menuitem, #tray menuitem:hover {
+	margin: 1px 2px;
+	padding: 1px 2px;
+}
+
+#tray menuitem:hover {
+	background-color: @background-light;
+}
+
+#tray menuitem.inactive {
+	
+	background-color: @background-light;
+}
+
+#tray > .needs-attention {
+	background-color: @red;
+}
+
+/* pulseaudio */
+#pulseaudio{
+	padding: 1px 0px;
+	margin: 1px 0px;
+	color: @foreground;
+}
+
+#pulseaudio.bluetooth {
+	background-color: @blue;
+}
+
+/* pulseaudio#source */
+#pulseaudio.source { 
+	padding: 2px 0px;
+	background-color: @red;
+	color: @bg_dim;
+}
+
+#pulseaudio.source.source-muted {
+	background-color: @background-light;
+	color: @foreground;
+}
+
+#network {
+	padding: 2px 0px;
+	color: @foreground;
+}
+
+#network.disconnected {
+	background-color: @red;
+	color: @background-light;
+}
+
+#network.disabled {
+	background-color: @foreground;
+	color: @background-light;
+}
+
+#bluetooth {
+	padding: 1px 0px;
+	color: @foreground;
+}
+
+#bluetooth.connected {
+	color: @blue;
+}
+
+#cpu {
+	padding: 1px 0px;
+	color: @foreground;
+}
+
+#memory {
+	padding: 1px 0px;
+	color: @foreground;
+}
+
+#temperature{
+	padding: 2px 0px;
+	margin: 2px 0px;
+	color: @foreground;
+}
+
+#temperature.critical {
+	background-color: @red;
+	color: @background-light;
+}
+
+#backlight {
+	padding: 1px 0px;
+	font-size: 18px;
+	color: @foreground;
+}
+
+#language {
+	color: @white;
+}
+
+#keyboard-state {
+	color: @white;
+}
+
+#keyboard-state label.locked {
+	background-color: @foreground;
+}
+
+#battery {
+	padding: 2px 0px 4px 0px;
+	color: @foreground;
+}
+
+#battery.warning:not(.charging) {
+	background-color: @orange;
+	color: @background-light;
+}
+
+#battery.critical:not(.charging) {
+	background-color: @red;
+	color: @background-light;
+}
+
+#battery.charging {
+  background-color: @green;
+  color: @background-light;
+}
+
+#clock { 
+	background-color: @foreground;
+	color: @background-light;
+	padding: 2px 0px 0px 0px;
+	font-size: 16px;
+}

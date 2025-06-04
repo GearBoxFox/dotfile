@@ -1,254 +1,297 @@
 // vim: foldmethod=marker
 // fineman's config
-
 // for all options check out: 
 // https://github.com/Alexays/Waybar/tree/master/man
 // https://github.com/Alexays/Waybar/wiki/
-
 {
-"reload_style_on_change": true,
-"layer": "top", 
-"spacing": 0,
-"width": 48,
-
-"fixed-center": false,
-
-// Backlight {{{
-"backlight": {
-	"format":		"{icon}",
-	"format-icons":		["󰛩",
-				"󱩎",
-				"󱩏",
-				"󱩐",
-				"󱩑",
-				"󱩒",
-				"󱩓",
-				"󱩔",
-				"󱩕",
-				"󱩖",
-				"󰛨"],
-	"on-scroll-down":	"brightnessctl set 1%- && $HOME/.scripts/progressbar.sh --brightness 'eDP-1'",
-	"on-scroll-up":		"brightnessctl set +1% && $HOME/.scripts/progressbar.sh --brightness 'eDP-1'",
-	"tooltip": 		false,
-},
-// }}}
-
-// Battery {{{
-"battery": {
-	"states": {
-		"warning": 30,
-		"critical": 15
-	},
-  "bat": "BAT0",
-  "adapter": "ADP0",
-
-	"format": "{icon} {capacity}",
-	"format-charging": "󰂄 {capacity}", 
-	// NOTE  you can add additional format-{power-status}, just check /sys/class/power_supply/<bat>/status and replace {power-status} with given output
-
-	"format-full": "󰂄 {capacity}",
-	"format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
-
-	"tooltip": true,
-	"tooltip-format": "{time}\nPower: {power} Watt\nCycles: {cycles}",
-},
-// }}}
-
-//  TODO  test with at least two bluetooth devices connected
-"bluetooth": {
-	"format": "󰂯",
-	"format-connected": "󰂱",
-	"format-disabled": "󰂲",
-	"format-icons":	["󰤾","󰤿","󰥀","󰥁","󰥂","󰥃","󰥄","󰥅","󰥆","󰥈"],
-	"format-off": "󰂲",  
-	"format-on": "󰂯",
-
-	"tooltip": "true", 
-	"tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
-	"tooltip-format-disabled": "", 
-	"tooltip-format-off": "", 
-	"tooltip-format-on": "",
-	"tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
-
-	"tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
-	"tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
-	
-	"on-click-right": "rfkill toggle bluetooth"
-},
-
-// Cava: {{{
-"cava": {
-  "cava_config": "$XDG_CONFIG_HOME/cava/cava.conf",
-  "framerate": 30,
-  "autosens": 1,
-  "sensitivity": 100,
-  "bars": 14,
-  "lower_cutoff_freq": 50,
-  "higher_cutoff_freq": 10000,
-  "method": "pulse",
-  "source": "auto",
-  "stereo": true,
-  "reverse": false,
-  "bar_delimiter": 0,
-  "monstercat": false,
-  "waves": false,
-  "noise_reduction": 0.77,
-  "input_delay": 2,
-  "format-icons" : ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" ],
-  "actions": {
-       "on-click-right": "mode"
-  }
-},
-// }}}
-
-// Clock {{{
-"clock": {
-	"format": "{:%H\n%M}",
-	"tooltip": true,
-	"tooltip-format": "<small>{calendar}</small>",
-
-	"calendar": {
-        	"mode"          : "month",
-        	"weeks-pos"     : "left",
-        	"on-scroll"     : 1,
-                "format": {
-                            "months":     "<span color='#d4be98'><b>{}</b></span>",
-                            "weeks":      "<span color='#7daea3'><b>W{}</b></span>",
-                            "weekdays":   "<span color='#d8a657'><b>{}</b></span>",
-                            "days":       "<span color='#d4be98'><b>{}</b></span>",
-                            "today":      "<span color='#e78a4e'><b><u>{}</u></b></span>"
-                },
-        },
-	"actions":  {
-        	"on-scroll-up": "shift_up",
-        	"on-scroll-down": "shift_down"
-	},
-},	
-// }}}
-
-// CPU {{{
-"cpu": {
-	"interval": 10,
-        "format": "󰍛 {usage}",
-        "tooltip": true,
-	"on-click": "alacritty -T 'Floating Term btop' -e btop"
-},
-// }}} 
-
-// Idle inhibitor {{{
-"idle_inhibitor": {
-	"format": "{icon}",
-	"format-icons": {
-		"activated": "󰛊",
-        	"deactivated": "󰾫",
-	},
-	"tooltip": false,
-},
-// }}} 
-
-// Keyboard state {{{
-"keyboard-state": {
+  "reload_style_on_change": true,
+  "layer": "top",
+  "spacing": 0,
+  //"width": auto,
+  "fixed-center": false,
+  // Custom {{{
+  "custom/playerctl": {
+    "format": " 󰐊 {}",
+    "return-type": "json",
+    "max-length": 40,
+    "exec": "playerctl -a metadata --format '{\"text\": \"{{artist}} - {{markup_escape(title)}}\", \"tooltip\": \"{{playerName}} : {{artist}} - {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F",
+    "on-click": "playerctl play-pause",
+    "on-click-right": "playerctl next"
+  },
+  "custom/weather": {
+    "exec": "curl 'https://wttr.in/?format=1' | sed 's/☁️ //;'",
+    "interval": 3600,
+    "format": "{}",
+    "tooltip": true
+  },
+  "custom/quote": {
+    "format": "󰚛 {}",
+    "interval": 3600,
+    "exec": "fortune -s",
+    "on-click": "fortune | yad --text-info --width=400 --height=200 --title='Fortune'",
+    "tooltip": true
+  },
+  "custom/uptime": {
+    "format": "󰔟 {}",
+    "exec": "uptime -p | sed 's/up //; s/ days/d/; s/ hour/h/; s/ hours/h/; s/ minutes/m/'",
+    "interval": 60
+  },
+  "custom/nvidia": {
+    "exec": "nvidia-smi --query-gpu=utilization.gpu,temperature.gpu --format=csv,nounits,noheader | sed 's/\\([0-9]\\+\\), \\([0-9]\\+\\)/\\1%  \\2°C/g'",
+    "format": "󰍹  {}",
+    "interval": 2
+  },
+  "custom/restart": {
+    "format": "",
+    "on-click": "hyprctl reload"
+  },
+  // }}}
+  // Backlight {{{
+  "backlight": {
+    "format": "{icon}",
+    "format-icons": [
+      "󰛩",
+      "󱩎",
+      "󱩏",
+      "󱩐",
+      "󱩑",
+      "󱩒",
+      "󱩓",
+      "󱩔",
+      "󱩕",
+      "󱩖",
+      "󰛨"
+    ],
+    "on-scroll-down": "brightnessctl set 1%- && $HOME/.scripts/progressbar.sh --brightness 'eDP-1'",
+    "on-scroll-up": "brightnessctl set +1% && $HOME/.scripts/progressbar.sh --brightness 'eDP-1'",
+    "tooltip": false,
+  },
+  // }}}
+  // Battery {{{
+  "battery": {
+    "states": {
+      "warning": 30,
+      "critical": 15
+    },
+    "bat": "BAT0",
+    "adapter": "ADP0",
+    "format": "{icon} {capacity}",
+    "format-charging": "󰂄 {capacity}",
+    // NOTE  you can add additional format-{power-status}, just check /sys/class/power_supply/<bat>/status and replace {power-status} with given output
+    "format-full": "󰂄 {capacity}",
+    "format-icons": [
+      "󰂎",
+      "󰁺",
+      "󰁻",
+      "󰁼",
+      "󰁽",
+      "󰁾",
+      "󰁿",
+      "󰂀",
+      "󰂁",
+      "󰂂",
+      "󰁹"
+    ],
+    "tooltip": true,
+    "tooltip-format": "{time}\nPower: {power} Watt\nCycles: {cycles}",
+  },
+  // }}}
+  //  TODO  test with at least two bluetooth devices connected
+  "bluetooth": {
+    "format": "󰂯",
+    "format-connected": "󰂱",
+    "format-disabled": "󰂲",
+    "format-icons": [
+      "󰤾",
+      "󰤿",
+      "󰥀",
+      "󰥁",
+      "󰥂",
+      "󰥃",
+      "󰥄",
+      "󰥅",
+      "󰥆",
+      "󰥈"
+    ],
+    "format-off": "󰂲",
+    "format-on": "󰂯",
+    "tooltip": "true",
+    "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
+    "tooltip-format-disabled": "",
+    "tooltip-format-off": "",
+    "tooltip-format-on": "",
+    "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
+    "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+    "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
+    "on-click-right": "rfkill toggle bluetooth"
+  },
+  // Cava: {{{
+  "cava": {
+    //    "cava_config": "$HOME/.config/cava/conf",
+    "framerate": 30,
+    "autosens": 1,
+    "sensitivity": 100,
+    "bars": 14,
+    "lower_cutoff_freq": 50,
+    "higher_cutoff_freq": 10000,
+    "method": "pulse",
+    "source": "auto",
+    "stereo": true,
+    "reverse": false,
+    "bar_delimiter": 0,
+    "monstercat": false,
+    "waves": false,
+    "noise_reduction": 0.77,
+    "input_delay": 2,
+    "format-icons": [
+      "▁",
+      "▂",
+      "▃",
+      "▄",
+      "▅",
+      "▆",
+      "▇",
+      "█"
+    ],
+    "actions": {
+      "on-click-right": "mode"
+    }
+  },
+  // }}}
+  // Clock {{{
+  "clock": {
+    "format": "{:%H:%M}",
+    "tooltip": true,
+    "tooltip-format": "<small>{calendar}</small>",
+    "calendar": {
+      "mode": "month",
+      "weeks-pos": "left",
+      "on-scroll": 1,
+      "format": {
+        "months": "<span color='#d4be98'><b>{}</b></span>",
+        "weeks": "<span color='#7daea3'><b>W{}</b></span>",
+        "weekdays": "<span color='#d8a657'><b>{}</b></span>",
+        "days": "<span color='#d4be98'><b>{}</b></span>",
+        "today": "<span color='#e78a4e'><b><u>{}</u></b></span>"
+      },
+    },
+    "actions": {
+      "on-scroll-up": "shift_up",
+      "on-scroll-down": "shift_down"
+    },
+  },
+  // }}}
+  // CPU {{{
+  "cpu": {
+    "interval": 10,
+    "format": "󰍛 {usage}",
+    "tooltip": true,
+    "on-click": "alacritty -T 'Floating Term btop' -e btop"
+  },
+  // }}} 
+  // Idle inhibitor {{{
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": "󰛊",
+      "deactivated": "󰾫",
+    },
+    "tooltip": false,
+  },
+  // }}} 
+  // Keyboard state {{{
+  "keyboard-state": {
     "numlock": true,
     "capslock": true,
     "format": {
-        "numlock": "N {icon}",
-        "capslock": "C {icon}"                                                                                                                                                       
+      "numlock": "N {icon}",
+      "capslock": "C {icon}"
     },
     "format-icons": {
-        "locked": "",
-        "unlocked": ""
+      "locked": "",
+      "unlocked": ""
     }
-},
-// }}}
-
-// Memory {{{
-"memory": {
-	"interval": 10,
-
-	"format": "󰧑 {percentage}",
-
-	"tooltip": true,
-	"tooltip-format": "RAM:\nUsed: {used} GiB\nAvailable: {avail} GiB\n\nSwap:\nUsed: {swapUsed} GiB\nAvailable: {swapAvail} GiB",	
-},
-// }}} 
-
-//  TODO  change names
-"network": {
-	"format-wifi": "󰤯",
-	"format-disconnected":"󰤫",
-	"format-linked":"test",
-	"format-ethernet":"󰈀",
-	"format-disabled":"󰤮",
-
-	"tooltip-format":"subject name to change when on ethernet {ifname} via {gwaddr} 󰈀",
-	"tooltip-format-wifi":"ESSID: {essid}\nFrequency: {frequency} GHz\nStrength: {signalStrength}%\nIP: {ipaddr}",
-	"tooltip-format-disconnected":  "Disconnected",
-
-	"on-click":"kitty 'Floating Term nmtui' -e nmtui connect",
-	"on-click-right": "rfkill toggle wifi",
-},
-
-// PulseAudio {{{
-"pulseaudio": {
-        "format": "{icon}",
-        "format-muted": "󰖁",
-        "format-bluetooth": "󰗾name subjecto to check",
-        "format-bluetooth-muted": "󰗿 name subject to check",
-        "format-icons": {
-            "default": ["󰕿", "󰖀", "󰕾"],
-            "headphone": "󱡬",
-	    "speaker": ["󰕿", "󰖀", "󰕾"],
-	    "hdmi": "󰡁",
-            "headset": "󱇰",
-	    "hands-free": "noname3",
-	    "portable": "noname4",
-	    "car": "noname5",
-	    "hifi": "noname6",
-	    "phone": "noname7",
-        },
-
-        "on-click": "flatpak run com.saivert.pwvucontrol &>/dev/null",
-        //"on-click": "alacritty -T 'Floating Term pulsemixer' -e ~/.local/bin/pulsemixer",
-	"on-click-right": "pactl set-sink-mute 0 toggle && $HOME/.scripts/progressbar.sh --volume-mute",
-
-	"on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +1% && $HOME/.scripts/progressbar.sh --volume",
-	"on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -1% && $HOME/.scripts/progressbar.sh --volume",
-
-	"tooltip": true,
-	"tooltip-format": "Volume: {volume}%\n{desc}",
-},
-
-"pulseaudio#source": {
-	"format": "{format_source}",
-	"format-source": "",
-	"format-source-muted": "",
-
-        "on-click": "flatpak run com.saivert.pwvucontrol &>/dev/null",
-        //"on-click": "alacritty -T 'Floating Term pulsemixer' -e ~/.local/bin/pulsemixer",
-	"on-click-right": "pactl set-source-mute 0 1 && $HOME/.scripts/progressbar.sh --mic-mute",
-
-	"on-scroll-up": "pactl set-source-volume @DEFAULT_SOURCE@ +1% && $HOME/.scripts/progressbar.sh --mic-volume",
-	"on-scroll-down": "pactl set-source-volume @DEFAULT_SOURCE@ -1% && $HOME/.scripts/progressbar.sh --mic-volume",
-
-	"tooltip": false,
-},
-// }}}
-
-// Sway {{{
-"hyprland/submap": {
-	"rotate": 90,
-	"tooltip": false,
-
-	"on-click": "swaymsg mode 'default'",
-},
-
-"hyprland/window": {
-	"format": "",
-	"icon": true,
-  "icon-size": 24,
-},
-
-"hyprland/workspaces": {
+  },
+  // }}}
+  // Memory {{{
+  "memory": {
+    "interval": 10,
+    "format": "󰧑 {percentage}",
+    "tooltip": true,
+    "tooltip-format": "RAM:\nUsed: {used} GiB\nAvailable: {avail} GiB\n\nSwap:\nUsed: {swapUsed} GiB\nAvailable: {swapAvail} GiB",
+  },
+  // }}} 
+  //  TODO  change names
+  "network": {
+    "format-wifi": "󰤯",
+    "format-disconnected": "󰤫",
+    "format-linked": "test",
+    "format-ethernet": "󰈀",
+    "format-disabled": "󰤮",
+    "tooltip-format": "subject name to change when on ethernet {ifname} via {gwaddr} 󰈀",
+    "tooltip-format-wifi": "ESSID: {essid}\nFrequency: {frequency} GHz\nStrength: {signalStrength}%\nIP: {ipaddr}",
+    "tooltip-format-disconnected": "Disconnected",
+    "on-click": "kitty 'Floating Term nmtui' -e nmtui connect",
+    "on-click-right": "rfkill toggle wifi",
+  },
+  // PulseAudio {{{
+  "pulseaudio": {
+    "format": "{icon}",
+    "format-muted": "󰖁",
+    "format-bluetooth": "󰗾name subjecto to check",
+    "format-bluetooth-muted": "󰗿 name subject to check",
+    "format-icons": {
+      "default": [
+        "󰕿",
+        "󰖀",
+        "󰕾"
+      ],
+      "headphone": "󱡬",
+      "speaker": [
+        "󰕿",
+        "󰖀",
+        "󰕾"
+      ],
+      "hdmi": "󰡁",
+      "headset": "󱇰",
+      "hands-free": "noname3",
+      "portable": "noname4",
+      "car": "noname5",
+      "hifi": "noname6",
+      "phone": "noname7",
+    },
+    "on-click": "flatpak run com.saivert.pwvucontrol &>/dev/null",
+    //"on-click": "alacritty -T 'Floating Term pulsemixer' -e ~/.local/bin/pulsemixer",
+    "on-click-right": "pactl set-sink-mute 0 toggle && $HOME/.scripts/progressbar.sh --volume-mute",
+    "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +1% && $HOME/.scripts/progressbar.sh --volume",
+    "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -1% && $HOME/.scripts/progressbar.sh --volume",
+    "tooltip": true,
+    "tooltip-format": "Volume: {volume}%\n{desc}",
+  },
+  "pulseaudio#source": {
+    "format": "{format_source}",
+    "format-source": "",
+    "format-source-muted": "",
+    "on-click": "flatpak run com.saivert.pwvucontrol &>/dev/null",
+    //"on-click": "alacritty -T 'Floating Term pulsemixer' -e ~/.local/bin/pulsemixer",
+    "on-click-right": "pactl set-source-mute 0 1 && $HOME/.scripts/progressbar.sh --mic-mute",
+    "on-scroll-up": "pactl set-source-volume @DEFAULT_SOURCE@ +1% && $HOME/.scripts/progressbar.sh --mic-volume",
+    "on-scroll-down": "pactl set-source-volume @DEFAULT_SOURCE@ -1% && $HOME/.scripts/progressbar.sh --mic-volume",
+    "tooltip": false,
+  },
+  // }}}
+  // Sway {{{
+  "hyprland/submap": {
+    "rotate": 90,
+    "tooltip": false,
+    "on-click": "swaymsg mode 'default'",
+  },
+  "hyprland/window": {
+    "format": "",
+    "icon": true,
+    "icon-size": 24,
+  },
+  "hyprland/workspaces": {
     "format": "{icon}",
     "format-icons": {
       "urgent": "",
@@ -259,137 +302,146 @@
     },
     "all-outputs": false // recommended
   },
-
-// NUMBERS and ICONS style with window rewrite 
-"hyprland/workspaces#rw": {
-	"disable-scroll": true,
-	"all-outputs": false,
-	"warp-on-scroll": false,
-	"sort-by-number": true,
-	"show-special": false,
-	"on-click": "activate",
-	"on-scroll-up": "hyprctl dispatch workspace e+1",
-	"on-scroll-down": "hyprctl dispatch workspace e-1",
-	"persistent-workspaces": {
-		"*": 5
-	  },
-	"format": "{icon} {windows}",
-  "format-icons": {
+  "hyprland/workspaces#kanji": {
+    "disable-scroll": true,
+    "show-special": false,
+    "all-outputs": false,
+    "format": "{icon}",
+    "persistent-workspaces": {
+      "*": 5
+    },
+    "format-icons": {
+      "1": "一",
+      "2": "二",
+      "3": "三",
+      "4": "四",
+      "5": "五",
+      "6": "六",
+      "7": "七",
+      "8": "八",
+      "9": "九",
+      "10": "十",
+    }
+  },
+  // NUMBERS and ICONS style with window rewrite 
+  "hyprland/workspaces#rw": {
+    "disable-scroll": true,
+    "all-outputs": false,
+    "warp-on-scroll": false,
+    "sort-by-number": true,
+    "show-special": false,
+    "on-click": "activate",
+    "on-scroll-up": "hyprctl dispatch workspace e+1",
+    "on-scroll-down": "hyprctl dispatch workspace e-1",
+    "persistent-workspaces": {
+      "*": 5
+    },
+    "format": "{icon} {windows}",
+    "format-icons": {
       "urgent": "",
       "active": "", // focused workspace on current monitor 
       "visible": "", // focused workspace on other monitors
       "default": "",
       "empty": "" // persistent (created by this plugin)
     },
-	"format-window-separator": "\n  ",
-	"window-rewrite-default": "",
-	"window-rewrite": {		
-		"title<.*amazon.*>": " ",
-		"title<.*reddit.*>": " ",
-
-		"class<firefox|org.mozilla.firefox|librewolf|floorp|mercury-browser|[Cc]achy-browser>": " ",
-		"class<zen>": "󰰷 ",
-		"class<waterfox|waterfox-bin>": " ",
-		"class<microsoft-edge>": " ",
-		"class<Chromium|Thorium|[Cc]hrome>": " ",
-		"class<brave-browser>": "🦁 ",
-		"class<tor browser>": " ",
-		"class<firefox-developer-edition>": "🦊 ",
-
-		"class<kitty|konsole>": " ",
-		"class<kitty-dropterm>": " ",
-		"class<com.mitchellh.ghostty>": " ",
-		"class<org.wezfurlong.wezterm>": " ",
-
-		"class<[Tt]hunderbird|[Tt]hunderbird-esr>": " ",
-		"class<eu.betterbird.Betterbird>": " ",
-		"title<.*gmail.*>": "󰊫 ",
-
-		"class<[Tt]elegram-desktop|org.telegram.desktop|io.github.tdesktop_x64.TDesktop>": " ",
-		"class<discord|[Ww]ebcord|Vesktop>": " ",
-		"title<.*whatsapp.*>": " ",
-    "title<.*zapzap.*>": " ",
-		"title<.*messenger.*>": " ",
-		"title<.*facebook.*>": " ",
-		"title<.*reddit.*>": " ",
-
-
-		"title<.*ChatGPT.*>": "󰚩 ",
-		"title<.*deepseek.*>": "󰚩 ",
-		"title<.*qwen.*>": "󰚩 ",
-		"class<subl>": "󰅳 ",
-		"class<slack>": " ",
-
-		"class<mpv>": " ",
-		"class<celluloid|Zoom>": " ",
-		"class<Cider>": "󰎆 ",
-		"title<.*Picture-in-Picture.*>": " ",
-		"title<.*youtube.*>": " ",
-		"class<vlc>": "󰕼 ",
-		"title<.*cmus.*>": " ",
-		"class<[Ss]potify>": " ",
-
-		"class<virt-manager>": " ",
-		"class<.virt-manager-wrapped>": " ",
-		"class<virtualbox manager>": "💽 ",
-		"title<virtualbox>": "💽 ",
-		"class<remmina>": "🖥️ ",
-
-		"class<VSCode|code-url-handler|code-oss|codium|codium-url-handler|VSCodium>": "󰨞 ",
-    "class<dev.zed.Zed>": "󰵁",
-		"class<codeblocks>": "󰅩 ",
-		"title<.*github.*>": " ",
-		"class<mousepad>": " ",
-		"class<libreoffice-writer>": " ",
-		"class<libreoffice-startcenter>": "󰏆 ",
-		"class<libreoffice-calc>": " ",
-		"title<.*nvim ~.*>": " ",
-		"title<.*vim.*>": " ",
-		"title<.*nvim.*>": " ",
-		"title<.*figma.*>": " ",
-		"title<.*jira.*>": " ",
-		"class<jetbrains-idea>": " ",
-
-		"class<obs|com.obsproject.Studio>": " ",
-
-		"class<polkit-gnome-authentication-agent-1>": "󰒃 ",
-		"class<nwg-look>": " ",
-		"class<[Pp]avucontrol|org.pulseaudio.pavucontrol>": "󱡫 ",
-		"class<steam>": " ",
-		"class<thunar|nemo>": "󰝰 ",	
-    "class<Gparted>":"",
-		"class<gimp>": " ",
-		"class<emulator>": "📱 ",
-		"class<android-studio>": " ",
-   	"class<org.pipewire.Helvum>": "󰓃",
-    "class<localsend>":"",
-    "class<PrusaSlicer|UltiMaker-Cura|OrcaSlicer>": "󰹛",
-		}
-	},
-// }}}
-
-// Temperature {{{
-"temperature": { 
-	"thermal-zone": 5, // zone no. 5 is the closest to what btop shows me
-	"critical-threshold": 80,
-
-	"format": "{icon} {temperatureC}",
-	"format-icons": ["","","","",""],
-
-	"interval": 10,
-
-	"tooltip": false,
-
-	"on-click": "alacritty -T 'Floating Term btop' -e btop"
-}, 
-// }}}
-
-// Tray {{{
-"tray": {
-	"icon-size": 20,
-	"show-pasive-items": true,
-	"smooth-scrolling-threshold": 1,
-	"spacing": 3,
-},
-// }}}
+    "format-window-separator": "\n  ",
+    "window-rewrite-default": "",
+    "window-rewrite": {
+      "title<.*amazon.*>": " ",
+      "title<.*reddit.*>": " ",
+      "class<firefox|org.mozilla.firefox|librewolf|floorp|mercury-browser|[Cc]achy-browser>": " ",
+      "class<zen>": "󰰷 ",
+      "class<waterfox|waterfox-bin>": " ",
+      "class<microsoft-edge>": " ",
+      "class<Chromium|Thorium|[Cc]hrome>": " ",
+      "class<brave-browser>": "🦁 ",
+      "class<tor browser>": " ",
+      "class<firefox-developer-edition>": "🦊 ",
+      "class<kitty|konsole>": " ",
+      "class<kitty-dropterm>": " ",
+      "class<com.mitchellh.ghostty>": " ",
+      "class<org.wezfurlong.wezterm>": " ",
+      "class<[Tt]hunderbird|[Tt]hunderbird-esr>": " ",
+      "class<eu.betterbird.Betterbird>": " ",
+      "title<.*gmail.*>": "󰊫 ",
+      "class<[Tt]elegram-desktop|org.telegram.desktop|io.github.tdesktop_x64.TDesktop>": " ",
+      "class<discord|[Ww]ebcord|Vesktop>": " ",
+      "title<.*whatsapp.*>": " ",
+      "title<.*zapzap.*>": " ",
+      "title<.*messenger.*>": " ",
+      "title<.*facebook.*>": " ",
+      "title<.*reddit.*>": " ",
+      "title<.*ChatGPT.*>": "󰚩 ",
+      "title<.*deepseek.*>": "󰚩 ",
+      "title<.*qwen.*>": "󰚩 ",
+      "class<subl>": "󰅳 ",
+      "class<slack>": " ",
+      "class<mpv>": " ",
+      "class<celluloid|Zoom>": " ",
+      "class<Cider>": "󰎆 ",
+      "title<.*Picture-in-Picture.*>": " ",
+      "title<.*youtube.*>": " ",
+      "class<vlc>": "󰕼 ",
+      "title<.*cmus.*>": " ",
+      "class<[Ss]potify>": " ",
+      "class<virt-manager>": " ",
+      "class<.virt-manager-wrapped>": " ",
+      "class<virtualbox manager>": "💽 ",
+      "title<virtualbox>": "💽 ",
+      "class<remmina>": "🖥️ ",
+      "class<VSCode|code-url-handler|code-oss|codium|codium-url-handler|VSCodium>": "󰨞 ",
+      "class<dev.zed.Zed>": "󰵁",
+      "class<codeblocks>": "󰅩 ",
+      "title<.*github.*>": " ",
+      "class<mousepad>": " ",
+      "class<libreoffice-writer>": " ",
+      "class<libreoffice-startcenter>": "󰏆 ",
+      "class<libreoffice-calc>": " ",
+      "title<.*nvim ~.*>": " ",
+      "title<.*vim.*>": " ",
+      "title<.*nvim.*>": " ",
+      "title<.*figma.*>": " ",
+      "title<.*jira.*>": " ",
+      "class<jetbrains-idea>": " ",
+      "class<obs|com.obsproject.Studio>": " ",
+      "class<polkit-gnome-authentication-agent-1>": "󰒃 ",
+      "class<nwg-look>": " ",
+      "class<[Pp]avucontrol|org.pulseaudio.pavucontrol>": "󱡫 ",
+      "class<steam>": " ",
+      "class<thunar|nemo>": "󰝰 ",
+      "class<Gparted>": "",
+      "class<gimp>": " ",
+      "class<emulator>": "📱 ",
+      "class<android-studio>": " ",
+      "class<org.pipewire.Helvum>": "󰓃",
+      "class<localsend>": "",
+      "class<PrusaSlicer|UltiMaker-Cura|OrcaSlicer>": "󰹛",
+    }
+  },
+  // }}}
+  // Temperature {{{
+  "temperature": {
+    "thermal-zone": 5, // zone no. 5 is the closest to what btop shows me
+    "critical-threshold": 80,
+    "format": "{icon} {temperatureC}",
+    "format-icons": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "interval": 10,
+    "tooltip": false,
+    "on-click": "alacritty -T 'Floating Term btop' -e btop"
+  },
+  // }}}
+  // Tray {{{
+  "tray": {
+    "icon-size": 20,
+    "show-pasive-items": true,
+    "smooth-scrolling-threshold": 1,
+    "spacing": 3,
+  },
+  // }}}
 }
